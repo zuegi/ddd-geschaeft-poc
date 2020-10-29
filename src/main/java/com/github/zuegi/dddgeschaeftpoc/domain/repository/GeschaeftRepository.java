@@ -9,7 +9,7 @@ import com.github.zuegi.dddgeschaeftpoc.stereotypen.Repository;
 @Repository
 public interface GeschaeftRepository {
 
-   void add(Geschaeft geschaeft) throws GeschaeftSchonErfasstException;
+   void save(Geschaeft geschaeft) throws GeschaeftSchonErfasstException;
 
    void update(Geschaeft geschaeft);
 

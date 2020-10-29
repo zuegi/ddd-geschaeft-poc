@@ -19,7 +19,7 @@ public class DomainGeschaeftService implements GeschaeftService {
     @Override
     public GeschaeftIdentifier createGeschaeft(GeschaeftHandle geschaeftHandle, Preis preis) {
         Geschaeft geschaeft = Geschaeft.newGeschaeft(geschaeftHandle, preis);
-        this.geschaeftRepository.add(geschaeft);
+        this.geschaeftRepository.save(geschaeft);
         return geschaeft.id();
     }
 }

@@ -1,10 +1,16 @@
 package com.github.zuegi.dddgeschaeftpoc.infrastructure;
 
 import com.github.zuegi.dddgeschaeftpoc.domain.*;
+import com.github.zuegi.dddgeschaeftpoc.domain.repository.GeschaeftRepository;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JdbcGeschaeftRepository implements GeschaeftRepository {
+
+
+
     @Override
-    public void add(Geschaeft geschaeft) throws GeschaeftSchonErfasstException {
+    public void save(Geschaeft geschaeft) throws GeschaeftSchonErfasstException {
 
     }
 
