@@ -32,4 +32,8 @@ public class Geschaeft {
     public static Geschaeft newGeschaeft(GeschaeftHandle geschaeftHandle, Preis preis) {
         return new Geschaeft(domainEventPublisher, geschaeftHandle, preis);
     }
+
+    public Preis preis() {
+        return this.preis;
+    }
 }

@@ -9,7 +9,6 @@ import com.github.zuegi.dddgeschaeftpoc.domain.repository.GeschaeftRepository;
 
 public class DomainGeschaeftService implements GeschaeftService {
 
-
     private GeschaeftRepository geschaeftRepository;
 
     public DomainGeschaeftService(GeschaeftRepository geschaeftRepository) {
@@ -21,5 +20,10 @@ public class DomainGeschaeftService implements GeschaeftService {
         Geschaeft geschaeft = Geschaeft.newGeschaeft(geschaeftHandle, preis);
         this.geschaeftRepository.save(geschaeft);
         return geschaeft.id();
+    }
+
+    @Override
+    public Geschaeft findGeschaeftByIdentifier(GeschaeftIdentifier geschaeftIdentifier) {
+        return this.geschaeftRepository.findGeschaeftByIdentifier(geschaeftIdentifier);
     }
 }

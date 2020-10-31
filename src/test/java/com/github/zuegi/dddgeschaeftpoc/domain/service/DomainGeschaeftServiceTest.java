@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class DomainGeschaeftServiceTest {
 
@@ -30,6 +29,23 @@ class DomainGeschaeftServiceTest {
         GeschaeftIdentifier geschaeftIdentifier = domainGeschaeftService.createGeschaeft(geschaeftHandle, preis);
         verify(geschaeftRepository).save(any(Geschaeft.class));
         assertNotNull(geschaeftIdentifier);
+    }
 
+    @Test
+    void findGeschaeftByIdentifier() {
+        // given
+        GeschaeftHandle geschaeftHandle = GeschaeftHandle.geschaeftHandle(TestHelper.BILDSCHIRM_PHILIPS_278E);
+        Preis preis = new Preis(TestHelper.BILDSCHIRM_PHILIPS_278E_VERKAUFSPREIS, Currency.CHF);
+        when(geschaeftRepository.findGeschaeftByIdentifier(any(GeschaeftIdentifier.class))).thenReturn(Geschaeft.newGeschaeft(geschaeftHandle, preis));
+
+        // when
+        GeschaeftIdentifier geschaeftIdentifier = domainGeschaeftService.createGeschaeft(geschaeftHandle, preis);
+        Geschaeft geschaeft = domainGeschaeftService.findGeschaeftByIdentifier(geschaeftIdentifier);
+
+        // then
+        verify(geschaeftRepository).findGeschaeftByIdentifier(any(GeschaeftIdentifier.class));
+
+        assertEquals(geschaeftHandle, geschaeft.geschaeftHandle());
+        assertEquals(preis, geschaeft.preis());
     }
 }
