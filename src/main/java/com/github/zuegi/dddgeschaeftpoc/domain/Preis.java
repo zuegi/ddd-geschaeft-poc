@@ -16,10 +16,17 @@ public class Preis {
         this.currency = currency;
     }
 
-   public Preis(Preis preis) {
+    public Preis(Preis preis) {
         this(preis.betrag, preis.currency);
     }
 
+    public BigDecimal betrag() {
+        return this.betrag;
+    }
+
+    public Currency currency() {
+        return this.currency;
+    }
 
     @Override
     public boolean equals(Object object) {
@@ -34,6 +41,6 @@ public class Preis {
 
     @Override
     public String toString() {
-        return "Preis: " +this.betrag +" " +this.currency;
+        return "Preis: " + this.betrag + " " + this.currency;
     }
 }

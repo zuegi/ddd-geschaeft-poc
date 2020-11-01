@@ -5,34 +5,45 @@ import com.github.zuegi.dddgeschaeftpoc.domain.repository.GeschaeftRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.util.Collection;
+
 @Component
 public class JdbcGeschaeftRepository implements GeschaeftRepository {
 
 
-    private final SpringDataJdbcGeschaeftRepository orderRepository;
+    private final SpringDataJdbcGeschaeftRepository springDataJdbcGeschaeftRepository;
 
     @Autowired
-    public JdbcGeschaeftRepository(SpringDataJdbcGeschaeftRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    public JdbcGeschaeftRepository(SpringDataJdbcGeschaeftRepository springDataJdbcGeschaeftRepository) {
+        this.springDataJdbcGeschaeftRepository = springDataJdbcGeschaeftRepository;
     }
 
     @Override
-    public void save(Geschaeft geschaeft) throws GeschaeftSchonErfasstException {
-        orderRepository.save(new GeschaeftEntity(geschaeft));
+    public void add(Geschaeft geschaeft) throws GeschaeftSchonErfasstException {
+        springDataJdbcGeschaeftRepository.save(new GeschaeftEntity(geschaeft));
     }
 
     @Override
     public void update(Geschaeft geschaeft) {
-
+        GeschaeftEntity entity = this.springDataJdbcGeschaeftRepository.findByGeschaeftId(geschaeft.id().value());
+        // findet hier ein Mapping statt oder im Service?
+        entity.setBeschreibung(geschaeft.geschaeftHandle().value());
+        springDataJdbcGeschaeftRepository.save(entity);
     }
 
     @Override
     public Geschaeft get(GeschaeftIdentifier geschaeftIdentifier) {
-        return null;
+        GeschaeftEntity entity = this.springDataJdbcGeschaeftRepository.findByGeschaeftId(geschaeftIdentifier.value());
+        GeschaeftHandle geschaeftHandle = GeschaeftHandle.geschaeftHandle(entity.beschreibung);
+        Preis preis = new Preis(new BigDecimal("20.35"), Currency.CHF);
+        return Geschaeft.newGeschaeft(geschaeftHandle, preis);
     }
 
     @Override
-    public Geschaeft find(GeschaeftHandle geschaeftHandle) {
+    public Collection<Geschaeft> findAll() {
         return null;
     }
+
+
 }

@@ -7,16 +7,17 @@ import com.github.zuegi.dddgeschaeftpoc.domain.GeschaeftSchonErfasstException;
 import com.github.zuegi.dddgeschaeftpoc.infrastructure.GeschaeftEntity;
 import com.github.zuegi.dddgeschaeftpoc.stereotypen.Repository;
 
+import java.util.Collection;
+
 @Repository
 public interface GeschaeftRepository {
 
-   void save(Geschaeft geschaeft) throws GeschaeftSchonErfasstException;
+   void add(Geschaeft geschaeft) throws GeschaeftSchonErfasstException;
 
    void update(Geschaeft geschaeft);
 
-   Geschaeft findGeschaeftByIdentifier(GeschaeftIdentifier geschaeftIdentifier);
+   Geschaeft get(GeschaeftIdentifier geschaeftIdentifier);
 
-   Geschaeft find(GeschaeftHandle geschaeftHandle);
+   Collection<Geschaeft> findAll();
 
-   Geschaeft findBy(String geschaeftIdentifier);
 }

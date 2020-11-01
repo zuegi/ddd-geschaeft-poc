@@ -18,12 +18,12 @@ public class DomainGeschaeftService implements GeschaeftService {
     @Override
     public GeschaeftIdentifier createGeschaeft(GeschaeftHandle geschaeftHandle, Preis preis) {
         Geschaeft geschaeft = Geschaeft.newGeschaeft(geschaeftHandle, preis);
-        this.geschaeftRepository.save(geschaeft);
+        this.geschaeftRepository.add(geschaeft);
         return geschaeft.id();
     }
 
     @Override
     public Geschaeft findGeschaeftByIdentifier(GeschaeftIdentifier geschaeftIdentifier) {
-        return this.geschaeftRepository.findGeschaeftByIdentifier(geschaeftIdentifier);
+        return this.geschaeftRepository.get(geschaeftIdentifier);
     }
 }

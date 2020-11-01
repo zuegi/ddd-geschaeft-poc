@@ -3,9 +3,12 @@ package com.github.zuegi.dddgeschaeftpoc.application.rest;
 import com.github.zuegi.dddgeschaeftpoc.domain.*;
 import com.github.zuegi.dddgeschaeftpoc.domain.service.DomainGeschaeftService;
 import com.github.zuegi.dddgeschaeftpoc.domain.service.GeschaeftService;
+import com.github.zuegi.dddgeschaeftpoc.infrastructure.GeschaeftEntity;
 import com.github.zuegi.dddgeschaeftpoc.infrastructure.JdbcGeschaeftRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,15 +25,26 @@ public class GeschaeftResource {
         this.geschaeftService = new DomainGeschaeftService(jdbcGeschaeftRepository);
     }
 
+    @ApiOperation(value = "Starte eine neues Geschaeft", response = String.class)
+    @PostMapping(value = "/{beschreibung}")
+    public ResponseEntity<String> createGeschaeft(
+            @ApiParam(value = "Gib eine Beschreibung des neuen Geschaefts ein", required = true) @PathVariable(name = "beschreibung") String beschreibung) {
 
-    @PostMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GeschaeftIdentifier> saveGeschaeft(@RequestParam String beschreibung) {
-
-        GeschaeftHandle geschaeftHandle = GeschaeftHandle.geschaeftHandle("Übergrosser Bildschirm");
+        GeschaeftHandle geschaeftHandle = GeschaeftHandle.geschaeftHandle(beschreibung);
         Preis preis = new Preis(new BigDecimal("1238.60"), Currency.CHF);
 
         GeschaeftIdentifier geschaeft = this.geschaeftService.createGeschaeft(geschaeftHandle, preis);
-        return ResponseEntity.ok(geschaeft);
+        return ResponseEntity.ok("geschaeft identifier: [" + geschaeft.value() + "]");
+    }
+
+    @ApiOperation(value = "Gibt eine Geschaeft zurück", response = String.class)
+    @GetMapping(value = "/{geschaeftIdentifier}")
+    public ResponseEntity<GeschaeftUI> getGescheft(
+            @ApiParam(value = "Geschaeft mit Identifier", required = true) @PathVariable String geschaeftIdentifier) {
+        GeschaeftIdentifier geschaeftIdentifier1 = GeschaeftIdentifier.geschaeftIdentifier(geschaeftIdentifier);
+        Geschaeft geschaeft = geschaeftService.findGeschaeftByIdentifier(geschaeftIdentifier1);
+        GeschaeftUI geschaeftUI = new GeschaeftUI(geschaeft);
+        return ResponseEntity.ok(geschaeftUI);
     }
 
 }

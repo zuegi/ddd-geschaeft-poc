@@ -27,7 +27,7 @@ class DomainGeschaeftServiceTest {
         Preis preis = new Preis(TestHelper.BILDSCHIRM_PHILIPS_278E_VERKAUFSPREIS, Currency.CHF);
 
         GeschaeftIdentifier geschaeftIdentifier = domainGeschaeftService.createGeschaeft(geschaeftHandle, preis);
-        verify(geschaeftRepository).save(any(Geschaeft.class));
+        verify(geschaeftRepository).add(any(Geschaeft.class));
         assertNotNull(geschaeftIdentifier);
     }
 
@@ -36,14 +36,14 @@ class DomainGeschaeftServiceTest {
         // given
         GeschaeftHandle geschaeftHandle = GeschaeftHandle.geschaeftHandle(TestHelper.BILDSCHIRM_PHILIPS_278E);
         Preis preis = new Preis(TestHelper.BILDSCHIRM_PHILIPS_278E_VERKAUFSPREIS, Currency.CHF);
-        when(geschaeftRepository.findGeschaeftByIdentifier(any(GeschaeftIdentifier.class))).thenReturn(Geschaeft.newGeschaeft(geschaeftHandle, preis));
+        when(geschaeftRepository.get(any(GeschaeftIdentifier.class))).thenReturn(Geschaeft.newGeschaeft(geschaeftHandle, preis));
 
         // when
         GeschaeftIdentifier geschaeftIdentifier = domainGeschaeftService.createGeschaeft(geschaeftHandle, preis);
         Geschaeft geschaeft = domainGeschaeftService.findGeschaeftByIdentifier(geschaeftIdentifier);
 
         // then
-        verify(geschaeftRepository).findGeschaeftByIdentifier(any(GeschaeftIdentifier.class));
+        verify(geschaeftRepository).get(any(GeschaeftIdentifier.class));
 
         assertEquals(geschaeftHandle, geschaeft.geschaeftHandle());
         assertEquals(preis, geschaeft.preis());
