@@ -39,7 +39,7 @@ class JdbcGeschaeftRepositoryTest {
         when(springDataJdbcGeschaeftRepository.findByGeschaeftId(any(String.class))).thenReturn(geschaeftEntity);
 
         // when
-        this.jdbcGeschaeftRepository.update(geschaeft);
+        this.jdbcGeschaeftRepository.add(geschaeft);
         // then
         verify(springDataJdbcGeschaeftRepository).save(any(GeschaeftEntity.class));
     }

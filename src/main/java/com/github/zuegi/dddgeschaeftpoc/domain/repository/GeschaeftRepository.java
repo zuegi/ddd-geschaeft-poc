@@ -13,8 +13,7 @@ import java.util.Collection;
 public interface GeschaeftRepository {
 
    void add(Geschaeft geschaeft) throws GeschaeftSchonErfasstException;
-
-   void update(Geschaeft geschaeft);
+   void addAll(Collection<Geschaeft> geschaeftCollection);
 
    Geschaeft get(GeschaeftIdentifier geschaeftIdentifier);
 

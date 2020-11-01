@@ -11,7 +11,6 @@ import java.util.Collection;
 @Component
 public class JdbcGeschaeftRepository implements GeschaeftRepository {
 
-
     private final SpringDataJdbcGeschaeftRepository springDataJdbcGeschaeftRepository;
 
     @Autowired
@@ -21,16 +20,31 @@ public class JdbcGeschaeftRepository implements GeschaeftRepository {
 
     @Override
     public void add(Geschaeft geschaeft) throws GeschaeftSchonErfasstException {
-        springDataJdbcGeschaeftRepository.save(new GeschaeftEntity(geschaeft));
+       saveOrUpdate(geschaeft);
+    }
+
+    private void saveOrUpdate(Geschaeft geschaeft) {
+        GeschaeftEntity geschaeftEntity = this.springDataJdbcGeschaeftRepository.findByGeschaeftId(geschaeft.id().value());
+        if (geschaeftEntity != null) {
+            geschaeftEntity.setBeschreibung(geschaeft.geschaeftHandle().value());
+        } else {
+            geschaeftEntity = new GeschaeftEntity(geschaeft);
+        }
+        springDataJdbcGeschaeftRepository.save(geschaeftEntity);
     }
 
     @Override
-    public void update(Geschaeft geschaeft) {
-        GeschaeftEntity entity = this.springDataJdbcGeschaeftRepository.findByGeschaeftId(geschaeft.id().value());
-        // findet hier ein Mapping statt oder im Service?
-        entity.setBeschreibung(geschaeft.geschaeftHandle().value());
-        springDataJdbcGeschaeftRepository.save(entity);
+    public void addAll(Collection<Geschaeft> geschaeftCollection) {
+
     }
+
+//    @Override
+//    public void update(Geschaeft geschaeft) {
+//        GeschaeftEntity entity = this.springDataJdbcGeschaeftRepository.findByGeschaeftId(geschaeft.id().value());
+//        // findet hier ein Mapping statt oder im Service?
+//        entity.setBeschreibung(geschaeft.geschaeftHandle().value());
+//        springDataJdbcGeschaeftRepository.save(entity);
+//    }
 
     @Override
     public Geschaeft get(GeschaeftIdentifier geschaeftIdentifier) {
