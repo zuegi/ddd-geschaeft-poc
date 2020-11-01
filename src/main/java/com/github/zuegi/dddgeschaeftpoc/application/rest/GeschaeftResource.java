@@ -26,12 +26,12 @@ public class GeschaeftResource {
     }
 
     @ApiOperation(value = "Starte eine neues Geschaeft", response = String.class)
-    @PostMapping(value = "/{beschreibung}")
+    @PostMapping(value = "/create")
     public ResponseEntity<String> createGeschaeft(
-            @ApiParam(value = "Gib eine Beschreibung des neuen Geschaefts ein", required = true) @PathVariable(name = "beschreibung") String beschreibung) {
+            @ApiParam(value = "Gib eine Beschreibung des neuen Geschaefts ein", required = true) @RequestBody GeschaeftUI geschaeftUI) {
 
-        GeschaeftHandle geschaeftHandle = GeschaeftHandle.geschaeftHandle(beschreibung);
-        Preis preis = new Preis(new BigDecimal("1238.60"), Currency.CHF);
+        GeschaeftHandle geschaeftHandle = GeschaeftHandle.geschaeftHandle(geschaeftUI.getBeschreibung());
+        Preis preis = new Preis(geschaeftUI.getBetrag(), geschaeftUI.getCurrency());
 
         GeschaeftIdentifier geschaeft = this.geschaeftService.createGeschaeft(geschaeftHandle, preis);
         return ResponseEntity.ok("geschaeft identifier: [" + geschaeft.value() + "]");
@@ -39,7 +39,7 @@ public class GeschaeftResource {
 
     @ApiOperation(value = "Gibt eine Geschaeft zurück", response = String.class)
     @GetMapping(value = "/{geschaeftIdentifier}")
-    public ResponseEntity<GeschaeftUI> getGescheft(
+    public ResponseEntity<GeschaeftUI> getGeschaeft(
             @ApiParam(value = "Geschaeft mit Identifier", required = true) @PathVariable String geschaeftIdentifier) {
         GeschaeftIdentifier geschaeftIdentifier1 = GeschaeftIdentifier.geschaeftIdentifier(geschaeftIdentifier);
         Geschaeft geschaeft = geschaeftService.findGeschaeftByIdentifier(geschaeftIdentifier1);
