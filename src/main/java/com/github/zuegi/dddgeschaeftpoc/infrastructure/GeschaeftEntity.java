@@ -16,10 +16,14 @@ public class GeschaeftEntity extends AbstractEntity{
 
     String geschaeftId;
     String beschreibung;
+    String anbieterId;
+    String konsumentId;
 
     public GeschaeftEntity(Geschaeft geschaeft) {
         this.geschaeftId = geschaeft.id().value();
         this.beschreibung = geschaeft.geschaeftHandle().value();
+        this.anbieterId = geschaeft.anbieter().value();
+        this.konsumentId = geschaeft.konsument().value();
     }
 
 }

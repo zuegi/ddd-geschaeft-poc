@@ -7,7 +7,7 @@ import com.github.zuegi.dddgeschaeftpoc.domain.Preis;
 
 public interface GeschaeftService {
 
-    GeschaeftIdentifier createGeschaeft(GeschaeftHandle geschaeftHandle, Preis preis);
+    GeschaeftIdentifier createGeschaeft(String anbieterId, String konsumentId, GeschaeftHandle geschaeftHandle, Preis preis);
 
     Geschaeft findGeschaeftByIdentifier(GeschaeftIdentifier geschaeftIdentifier);
 }

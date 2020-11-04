@@ -38,20 +38,12 @@ public class JdbcGeschaeftRepository implements GeschaeftRepository {
 
     }
 
-//    @Override
-//    public void update(Geschaeft geschaeft) {
-//        GeschaeftEntity entity = this.springDataJdbcGeschaeftRepository.findByGeschaeftId(geschaeft.id().value());
-//        // findet hier ein Mapping statt oder im Service?
-//        entity.setBeschreibung(geschaeft.geschaeftHandle().value());
-//        springDataJdbcGeschaeftRepository.save(entity);
-//    }
-
     @Override
     public Geschaeft get(GeschaeftIdentifier geschaeftIdentifier) {
         GeschaeftEntity entity = this.springDataJdbcGeschaeftRepository.findByGeschaeftId(geschaeftIdentifier.value());
         GeschaeftHandle geschaeftHandle = GeschaeftHandle.geschaeftHandle(entity.beschreibung);
         Preis preis = new Preis(new BigDecimal("20.35"), Currency.CHF);
-        return Geschaeft.newGeschaeft(geschaeftHandle, preis);
+        return Geschaeft.newGeschaeft(entity.anbieterId, entity.konsumentId, geschaeftHandle, preis);
     }
 
     @Override
